@@ -7,12 +7,12 @@ import (
 
 type IRepository interface {
 	FindAllMessageCategory() (*[]domain.FeedbackCategoryEntity, error)
-	SaveMessage(entity *domain.FeedbackEntity) error
+	SaveFeedback(entity *domain.FeedbackEntity) error
 	FindFeedbackByUUID(uuid string) (*domain.FeedbackEntity, error)
-	FindReplyByMessageID(messageId uint) (*domain.ReplyEntity, error)
+	FindReplyByFeedbackID(messageId uint) (*domain.ReplyEntity, error)
 	SaveReply(entity *domain.ReplyEntity) error
-	FindMessageByID(messageId uint) (*domain.FeedbackEntity, error)
-	GetUnreadMsg() (*[]domain.FeedbackEntity, error)
+	FindFeedbackByID(messageId uint) (*domain.FeedbackEntity, error)
+	GetUnreadFeedback() (*[]domain.FeedbackEntity, error)
 }
 
 type Repository struct {

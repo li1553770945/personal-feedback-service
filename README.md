@@ -2,7 +2,7 @@
 
 ## 初始化项目
 ```bash
-kitex -module "github.com/li1553770945/personal-feedback-service" -service ppersonal-feedback-service idl/feedback.thrift
+kitex -module "github.com/li1553770945/personal-feedback-service" -service personal-feedback-service idl/feedback.thrift
 cd biz/infra/container
 wire
 ```

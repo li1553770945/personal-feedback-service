@@ -1847,7 +1847,7 @@ func (p *GetReplyReq) FastRead(buf []byte) (int, error) {
 	var l int
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetMessageId bool = false
+	var issetFeedbackId bool = false
 	_, l, err = bthrift.Binary.ReadStructBegin(buf)
 	offset += l
 	if err != nil {
@@ -1865,13 +1865,13 @@ func (p *GetReplyReq) FastRead(buf []byte) (int, error) {
 		}
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				l, err = p.FastReadField1(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
 				}
-				issetMessageId = true
+				issetFeedbackId = true
 			} else {
 				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 				offset += l
@@ -1899,7 +1899,7 @@ func (p *GetReplyReq) FastRead(buf []byte) (int, error) {
 		goto ReadStructEndError
 	}
 
-	if !issetMessageId {
+	if !issetFeedbackId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -1923,12 +1923,12 @@ RequiredFieldNotSetError:
 func (p *GetReplyReq) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 
-		p.MessageId = v
+		p.FeedbackId = v
 
 	}
 	return offset, nil
@@ -1963,8 +1963,8 @@ func (p *GetReplyReq) BLength() int {
 
 func (p *GetReplyReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "message_id", thrift.STRING, 1)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.MessageId)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "feedback_id", thrift.I64, 1)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.FeedbackId)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1972,8 +1972,8 @@ func (p *GetReplyReq) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWri
 
 func (p *GetReplyReq) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("message_id", thrift.STRING, 1)
-	l += bthrift.Binary.StringLengthNocopy(p.MessageId)
+	l += bthrift.Binary.FieldBeginLength("feedback_id", thrift.I64, 1)
+	l += bthrift.Binary.I64Length(p.FeedbackId)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

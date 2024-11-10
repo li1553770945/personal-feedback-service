@@ -49,7 +49,7 @@ struct AddReplyResp{
     1: required base.BaseResp baseResp
 }
 struct GetReplyReq {
-    1: required string message_id
+    1: required i64 feedback_id
 }
 
 struct GetReplyResp {

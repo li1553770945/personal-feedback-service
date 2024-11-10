@@ -54,7 +54,7 @@ func (s *FeedbackServiceImpl) AddFeedback(ctx context.Context, req *feedback.Add
 		UUID:       uuid.New().String(),
 	}
 
-	err = s.Repo.SaveMessage(&entity)
+	err = s.Repo.SaveFeedback(&entity)
 	if err != nil {
 		return &feedback.AddFeedbackResp{
 			BaseResp: &base.BaseResp{Code: constant.SystemError, Message: err.Error()},
@@ -71,7 +71,7 @@ func (s *FeedbackServiceImpl) AddFeedback(ctx context.Context, req *feedback.Add
 
 // GetReply 获取回复内容
 func (s *FeedbackServiceImpl) GetReply(ctx context.Context, req *feedback.GetReplyReq) (resp *feedback.GetReplyResp, err error) {
-	msg, err := s.Repo.FindFeedbackByUUID(req.MessageId)
+	msg, err := s.Repo.FindFeedbackByID(uint(req.FeedbackId))
 	if err != nil {
 		return &feedback.GetReplyResp{
 			BaseResp: &base.BaseResp{Code: constant.SystemError, Message: err.Error()},
@@ -83,7 +83,7 @@ func (s *FeedbackServiceImpl) GetReply(ctx context.Context, req *feedback.GetRep
 		}, nil
 	}
 
-	reply, err := s.Repo.FindReplyByMessageID(uint(msg.ID))
+	reply, err := s.Repo.FindReplyByFeedbackID(uint(msg.ID))
 	if err != nil {
 		return &feedback.GetReplyResp{
 			BaseResp: &base.BaseResp{Code: constant.SystemError, Message: err.Error()},
@@ -118,7 +118,7 @@ func (s *FeedbackServiceImpl) AddReply(ctx context.Context, req *feedback.AddRep
 	}
 
 	// 获取关联消息并设置已读
-	msg, err := s.Repo.FindMessageByID(uint(req.MessageId))
+	msg, err := s.Repo.FindFeedbackByID(uint(req.MessageId))
 	if err != nil {
 		return &feedback.AddReplyResp{
 			BaseResp: &base.BaseResp{Code: constant.SystemError, Message: err.Error()},
@@ -131,7 +131,7 @@ func (s *FeedbackServiceImpl) AddReply(ctx context.Context, req *feedback.AddRep
 	}
 
 	msg.HaveRead = true
-	err = s.Repo.SaveMessage(msg)
+	err = s.Repo.SaveFeedback(msg)
 	if err != nil {
 		return &feedback.AddReplyResp{
 			BaseResp: &base.BaseResp{Code: constant.SystemError, Message: "保存失败：" + err.Error()},
@@ -151,7 +151,7 @@ func (s *FeedbackServiceImpl) AddReply(ctx context.Context, req *feedback.AddRep
 }
 
 func (s *FeedbackServiceImpl) GetUnreadFeedback(ctx context.Context) (resp *feedback.GetUnreadFeedbackResp, err error) {
-	unreadMessages, err := s.Repo.GetUnreadMsg()
+	unreadMessages, err := s.Repo.GetUnreadFeedback()
 	if err != nil {
 		return &feedback.GetUnreadFeedbackResp{
 			BaseResp: &base.BaseResp{

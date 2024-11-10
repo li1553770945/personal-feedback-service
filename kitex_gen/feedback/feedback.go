@@ -2333,7 +2333,7 @@ func (p *AddReplyResp) Field1DeepEqual(src *base.BaseResp) bool {
 }
 
 type GetReplyReq struct {
-	MessageId string `thrift:"message_id,1,required" frugal:"1,required,string" json:"message_id"`
+	FeedbackId int64 `thrift:"feedback_id,1,required" frugal:"1,required,i64" json:"feedback_id"`
 }
 
 func NewGetReplyReq() *GetReplyReq {
@@ -2344,22 +2344,22 @@ func (p *GetReplyReq) InitDefault() {
 	*p = GetReplyReq{}
 }
 
-func (p *GetReplyReq) GetMessageId() (v string) {
-	return p.MessageId
+func (p *GetReplyReq) GetFeedbackId() (v int64) {
+	return p.FeedbackId
 }
-func (p *GetReplyReq) SetMessageId(val string) {
-	p.MessageId = val
+func (p *GetReplyReq) SetFeedbackId(val int64) {
+	p.FeedbackId = val
 }
 
 var fieldIDToName_GetReplyReq = map[int16]string{
-	1: "message_id",
+	1: "feedback_id",
 }
 
 func (p *GetReplyReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
-	var issetMessageId bool = false
+	var issetFeedbackId bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -2376,11 +2376,11 @@ func (p *GetReplyReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
-				issetMessageId = true
+				issetFeedbackId = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -2400,7 +2400,7 @@ func (p *GetReplyReq) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
-	if !issetMessageId {
+	if !issetFeedbackId {
 		fieldId = 1
 		goto RequiredFieldNotSetError
 	}
@@ -2423,10 +2423,10 @@ RequiredFieldNotSetError:
 }
 
 func (p *GetReplyReq) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.MessageId = v
+		p.FeedbackId = v
 	}
 	return nil
 }
@@ -2461,10 +2461,10 @@ WriteStructEndError:
 }
 
 func (p *GetReplyReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("message_id", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("feedback_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.MessageId); err != nil {
+	if err := oprot.WriteI64(p.FeedbackId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -2490,15 +2490,15 @@ func (p *GetReplyReq) DeepEqual(ano *GetReplyReq) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.MessageId) {
+	if !p.Field1DeepEqual(ano.FeedbackId) {
 		return false
 	}
 	return true
 }
 
-func (p *GetReplyReq) Field1DeepEqual(src string) bool {
+func (p *GetReplyReq) Field1DeepEqual(src int64) bool {
 
-	if strings.Compare(p.MessageId, src) != 0 {
+	if p.FeedbackId != src {
 		return false
 	}
 	return true

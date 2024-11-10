@@ -18,9 +18,8 @@ func FeedbackCategoryEntityToDTO(entities *[]domain.FeedbackCategoryEntity) *fee
 	var data []*feedback.GetFeedbackCategoryRespData = make([]*feedback.GetFeedbackCategoryRespData, 0)
 	for _, entity := range *entities {
 		data = append(data, &feedback.GetFeedbackCategoryRespData{
-			Id:    entity.ID, // 假设 ID 是 uint 类型，需要转换为 int64
-			Name:  entity.Name,
-			Value: entity.Value,
+			Id:   entity.ID, // 假设 ID 是 uint 类型，需要转换为 int64
+			Name: entity.Name,
 		})
 	}
 	fmt.Println(data)
@@ -33,12 +32,14 @@ func FeedbackCategoryEntityToDTO(entities *[]domain.FeedbackCategoryEntity) *fee
 
 func FeedbackEntityToDto(entity *domain.FeedbackEntity) *feedback.GetFeedbackResp {
 	return &feedback.GetFeedbackResp{
-		BaseResp: GetSuccessBaseResp(),
-		Id:       entity.ID,
-		Title:    entity.Title,
-		Content:  entity.Content,
-		Name:     entity.Name,
-		Contact:  &entity.Contact,
+		BaseResp:  GetSuccessBaseResp(),
+		Id:        entity.ID,
+		Title:     entity.Title,
+		Content:   entity.Content,
+		Name:      entity.Name,
+		Contact:   entity.Contact,
+		CreatedAt: entity.CreatedAt.Unix(),
+		Category:  entity.Category.Name,
 	}
 }
 
@@ -46,8 +47,11 @@ func UnreadFeedbackEntitiesToDTO(entities *[]domain.FeedbackEntity) *feedback.Ge
 	var data []*feedback.UnreadFeedbackData
 	for _, entity := range *entities {
 		data = append(data, &feedback.UnreadFeedbackData{
-			Id:    int64(entity.ID), // 假设 ID 是 uint 类型，需要转换为 int64
-			Title: entity.Title,
+			Id:        entity.ID,
+			Title:     entity.Title,
+			Name:      entity.Name,
+			CreatedAt: entity.CreatedAt.Unix(),
+			Uuid:      entity.UUID,
 		})
 	}
 	return &feedback.GetUnreadFeedbackResp{

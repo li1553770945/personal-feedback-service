@@ -5,7 +5,6 @@ import "github.com/li1553770945/personal-feedback-service/biz/internal/do"
 type FeedbackCategoryEntity struct {
 	do.BaseModel
 	Name   string `json:"name"`
-	Value  string `json:"value"`
 	CanUse bool   `json:"can_use"`
 }
 type FeedbackEntity struct {

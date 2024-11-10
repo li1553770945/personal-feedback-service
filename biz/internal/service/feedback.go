@@ -108,9 +108,11 @@ func (s *FeedbackServiceImpl) GetReply(ctx context.Context, req *feedback.GetRep
 	}
 
 	klog.CtxInfof(ctx, "获取反馈回复成功，反馈ID: %v", reply.ID)
+	createdAt := reply.CreatedAt.Unix()
 	resp = &feedback.GetReplyResp{
-		BaseResp: &base.BaseResp{Code: 0},
-		Content:  &reply.Content,
+		BaseResp:  &base.BaseResp{Code: 0},
+		Content:   &reply.Content,
+		CreatedAt: &createdAt,
 	}
 	return resp, nil
 }

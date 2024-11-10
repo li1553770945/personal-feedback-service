@@ -15,11 +15,10 @@ import (
 
 // Injectors from wire.go:
 
-func GetContainer(env string) *Container {
-	configConfig := config.InitConfig(env)
-	db := database.NewDatabase(configConfig)
+func GetContainer(cfg *config.Config) *Container {
+	db := database.NewDatabase(cfg)
 	iRepository := repo.NewRepository(db)
-	iProjectService := project.NewProjectService(iRepository)
-	container := NewContainer(configConfig, iProjectService)
+	iFeedbackService := service.NewFeedbackService(iRepository)
+	container := NewContainer(cfg, iFeedbackService)
 	return container
 }

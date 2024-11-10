@@ -23,9 +23,11 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
+	"github.com/li1553770945/personal-feedback-service/biz/infra/config"
 	"github.com/li1553770945/personal-feedback-service/biz/infra/container"
-	"github.com/li1553770945/personal-feedback-service/kitex_gen/project/projectservice"
-	"log"
+	"github.com/li1553770945/personal-feedback-service/biz/infra/log"
+	"github.com/li1553770945/personal-feedback-service/biz/infra/trace"
+	"github.com/li1553770945/personal-feedback-service/kitex_gen/feedback/feedbackservice"
 	"net"
 	"os"
 )
@@ -35,15 +37,14 @@ func main() {
 	if env == "" {
 		env = "development"
 	}
-	container.InitGlobalContainer(env)
+	cfg := config.GetConfig(env)
+	container.InitGlobalContainer(cfg)
+	log.InitLog()
+	p := trace.InitTrace(cfg)
 	App := container.GetGlobalContainer()
 
 	serviceName := App.Config.ServerConfig.ServiceName
-	p := provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(serviceName),
-		provider.WithExportEndpoint(App.Config.OpenTelemetryConfig.Endpoint),
-		provider.WithInsecure(),
-	)
+
 	defer func(p provider.OtelProvider, ctx context.Context) {
 		err := p.Shutdown(ctx)
 		if err != nil {
@@ -58,10 +59,10 @@ func main() {
 
 	r, err := etcd.NewEtcdRegistry(App.Config.EtcdConfig.Endpoint) // r should not be reused.
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
-	svr := projectservice.NewServer(
-		new(ProjectServiceImpl),
+	svr := feedbackservice.NewServer(
+		new(FeedbackServiceImpl),
 		server.WithSuite(tracing.NewServerSuite()),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: serviceName}),
 		server.WithRegistry(r),

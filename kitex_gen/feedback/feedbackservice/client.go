@@ -16,6 +16,7 @@ type Client interface {
 	AddFeedback(ctx context.Context, req *feedback.AddFeedBackReq, callOptions ...callopt.Option) (r *feedback.AddFeedbackResp, err error)
 	AddReply(ctx context.Context, req *feedback.AddReplyReq, callOptions ...callopt.Option) (r *feedback.AddReplyResp, err error)
 	GetReply(ctx context.Context, req *feedback.GetReplyReq, callOptions ...callopt.Option) (r *feedback.GetReplyResp, err error)
+	GetUnreadFeedback(ctx context.Context, callOptions ...callopt.Option) (r *feedback.GetUnreadFeedbackResp, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -70,4 +71,9 @@ func (p *kFeedbackServiceClient) AddReply(ctx context.Context, req *feedback.Add
 func (p *kFeedbackServiceClient) GetReply(ctx context.Context, req *feedback.GetReplyReq, callOptions ...callopt.Option) (r *feedback.GetReplyResp, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetReply(ctx, req)
+}
+
+func (p *kFeedbackServiceClient) GetUnreadFeedback(ctx context.Context, callOptions ...callopt.Option) (r *feedback.GetUnreadFeedbackResp, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetUnreadFeedback(ctx)
 }

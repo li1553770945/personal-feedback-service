@@ -2,17 +2,17 @@ package repo
 
 import "github.com/li1553770945/personal-feedback-service/biz/internal/domain"
 
-func (Repo *Repository) FindAllMessageCategory() (*[]domain.MessageCategoryEntity, error) {
+func (Repo *Repository) FindAllMessageCategory() (*[]domain.FeedbackCategoryEntity, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (Repo *Repository) SaveMessage(entity *domain.MessageEntity) error {
+func (Repo *Repository) SaveMessage(entity *domain.FeedbackEntity) error {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (Repo *Repository) FindMessageByUUID(uuid string) (*domain.MessageEntity, error) {
+func (Repo *Repository) FindFeedbackByUUID(uuid string) (*domain.FeedbackEntity, error) {
 	//TODO implement me
 	panic("implement me")
 }
@@ -27,12 +27,12 @@ func (Repo *Repository) SaveReply(entity *domain.ReplyEntity) error {
 	panic("implement me")
 }
 
-func (Repo *Repository) FindMessageByID(messageId uint) (*domain.MessageEntity, error) {
+func (Repo *Repository) FindMessageByID(messageId uint) (*domain.FeedbackEntity, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (Repo *Repository) GetUnreadMsg() (*[]domain.MessageEntity, error) {
+func (Repo *Repository) GetUnreadMsg() (*[]domain.FeedbackEntity, error) {
 	//TODO implement me
 	panic("implement me")
 }

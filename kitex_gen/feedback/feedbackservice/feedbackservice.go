@@ -24,6 +24,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"AddFeedback":           kitex.NewMethodInfo(addFeedbackHandler, newFeedbackServiceAddFeedbackArgs, newFeedbackServiceAddFeedbackResult, false),
 		"AddReply":              kitex.NewMethodInfo(addReplyHandler, newFeedbackServiceAddReplyArgs, newFeedbackServiceAddReplyResult, false),
 		"GetReply":              kitex.NewMethodInfo(getReplyHandler, newFeedbackServiceGetReplyArgs, newFeedbackServiceGetReplyResult, false),
+		"GetUnreadFeedback":     kitex.NewMethodInfo(getUnreadFeedbackHandler, newFeedbackServiceGetUnreadFeedbackArgs, newFeedbackServiceGetUnreadFeedbackResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName":     "feedback",
@@ -130,6 +131,24 @@ func newFeedbackServiceGetReplyResult() interface{} {
 	return feedback.NewFeedbackServiceGetReplyResult()
 }
 
+func getUnreadFeedbackHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+
+	realResult := result.(*feedback.FeedbackServiceGetUnreadFeedbackResult)
+	success, err := handler.(feedback.FeedbackService).GetUnreadFeedback(ctx)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newFeedbackServiceGetUnreadFeedbackArgs() interface{} {
+	return feedback.NewFeedbackServiceGetUnreadFeedbackArgs()
+}
+
+func newFeedbackServiceGetUnreadFeedbackResult() interface{} {
+	return feedback.NewFeedbackServiceGetUnreadFeedbackResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -184,6 +203,15 @@ func (p *kClient) GetReply(ctx context.Context, req *feedback.GetReplyReq) (r *f
 	_args.Req = req
 	var _result feedback.FeedbackServiceGetReplyResult
 	if err = p.c.Call(ctx, "GetReply", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetUnreadFeedback(ctx context.Context) (r *feedback.GetUnreadFeedbackResp, err error) {
+	var _args feedback.FeedbackServiceGetUnreadFeedbackArgs
+	var _result feedback.FeedbackServiceGetUnreadFeedbackResult
+	if err = p.c.Call(ctx, "GetUnreadFeedback", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

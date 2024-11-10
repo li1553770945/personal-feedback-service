@@ -6,13 +6,13 @@ import (
 )
 
 type IRepository interface {
-	FindAllMessageCategory() (*[]domain.MessageCategoryEntity, error)
-	SaveMessage(entity *domain.MessageEntity) error
-	FindMessageByUUID(uuid string) (*domain.MessageEntity, error)
+	FindAllMessageCategory() (*[]domain.FeedbackCategoryEntity, error)
+	SaveMessage(entity *domain.FeedbackEntity) error
+	FindFeedbackByUUID(uuid string) (*domain.FeedbackEntity, error)
 	FindReplyByMessageID(messageId uint) (*domain.ReplyEntity, error)
 	SaveReply(entity *domain.ReplyEntity) error
-	FindMessageByID(messageId uint) (*domain.MessageEntity, error)
-	GetUnreadMsg() (*[]domain.MessageEntity, error)
+	FindMessageByID(messageId uint) (*domain.FeedbackEntity, error)
+	GetUnreadMsg() (*[]domain.FeedbackEntity, error)
 }
 
 type Repository struct {
@@ -20,11 +20,11 @@ type Repository struct {
 }
 
 func NewRepository(db *gorm.DB) IRepository {
-	err := db.AutoMigrate(&domain.MessageCategoryEntity{})
+	err := db.AutoMigrate(&domain.FeedbackCategoryEntity{})
 	if err != nil {
 		panic("迁移消息类别模型失败：" + err.Error())
 	}
-	err = db.AutoMigrate(&domain.MessageEntity{})
+	err = db.AutoMigrate(&domain.FeedbackEntity{})
 	if err != nil {
 		panic("迁移消息模型失败：" + err.Error())
 	}

@@ -2,20 +2,20 @@ package domain
 
 import "github.com/li1553770945/personal-feedback-service/biz/internal/do"
 
-type MessageCategoryEntity struct {
+type FeedbackCategoryEntity struct {
 	do.BaseModel
 	Name   string `json:"name"`
 	Value  string `json:"value"`
 	CanUse bool   `json:"can_use"`
 }
-type MessageEntity struct {
+type FeedbackEntity struct {
 	do.BaseModel
-	Category   MessageCategoryEntity `json:"category"`
-	CategoryID int                   `json:"category_id"`
-	Title      string                `json:"title"`
-	Message    string                `json:"message"`
-	Name       string                `json:"name"`
-	Contact    string                `json:"contact"`
-	HaveRead   bool                  `json:"have_read"`
-	UUID       string                `json:"uuid"`
+	Category   FeedbackCategoryEntity `json:"category"`
+	CategoryID int                    `json:"category_id"`
+	Title      string                 `json:"title"`
+	Content    string                 `json:"content"`
+	Name       string                 `json:"name"`
+	Contact    string                 `json:"contact"`
+	HaveRead   bool                   `json:"have_read"`
+	UUID       string                 `json:"uuid"`
 }

@@ -43,3 +43,11 @@ func (s *FeedbackServiceImpl) GetReply(ctx context.Context, req *feedback.GetRep
 	resp, err = APP.FeedbackService.GetReply(ctx, req)
 	return
 }
+
+// GetUnreadFeedback implements the FeedbackServiceImpl interface.
+func (s *FeedbackServiceImpl) GetUnreadFeedback(ctx context.Context) (resp *feedback.GetUnreadFeedbackResp, err error) {
+	// TODO: Your code here...
+	App := container.GetGlobalContainer()
+	resp, err = App.FeedbackService.GetUnreadFeedback(ctx)
+	return
+}

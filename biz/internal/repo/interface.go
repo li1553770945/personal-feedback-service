@@ -6,7 +6,7 @@ import (
 )
 
 type IRepository interface {
-	FindAllMessageCategory() (*[]domain.FeedbackCategoryEntity, error)
+	FindAllFeedbackCategories() (*[]domain.FeedbackCategoryEntity, error)
 	SaveFeedback(entity *domain.FeedbackEntity) error
 	FindFeedbackByUUID(uuid string) (*domain.FeedbackEntity, error)
 	FindReplyByFeedbackID(messageId uint) (*domain.ReplyEntity, error)

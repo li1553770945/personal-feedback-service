@@ -2,7 +2,7 @@ package repo
 
 import "github.com/li1553770945/personal-feedback-service/biz/internal/domain"
 
-func (Repo *Repository) FindAllMessageCategory() (*[]domain.FeedbackCategoryEntity, error) {
+func (Repo *Repository) FindAllFeedbackCategories() (*[]domain.FeedbackCategoryEntity, error) {
 	var entity []domain.FeedbackCategoryEntity
 	err := Repo.DB.Where("can_use = ?", true).Find(&entity).Error
 	if err != nil {

@@ -5,6 +5,7 @@ go 1.23.3
 require (
 	github.com/apache/thrift v0.21.0
 	github.com/cloudwego/kitex v0.11.3
+	github.com/google/uuid v1.3.1
 	github.com/google/wire v0.6.0
 	github.com/hertz-contrib/obs-opentelemetry/provider v0.3.0
 	github.com/kitex-contrib/obs-opentelemetry v0.2.7

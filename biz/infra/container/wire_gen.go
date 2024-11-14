@@ -9,6 +9,7 @@ package container
 import (
 	"github.com/li1553770945/personal-feedback-service/biz/infra/config"
 	"github.com/li1553770945/personal-feedback-service/biz/infra/database"
+	"github.com/li1553770945/personal-feedback-service/biz/infra/rpc"
 	"github.com/li1553770945/personal-feedback-service/biz/internal/repo"
 	"github.com/li1553770945/personal-feedback-service/biz/internal/service"
 )
@@ -18,7 +19,8 @@ import (
 func GetContainer(cfg *config.Config) *Container {
 	db := database.NewDatabase(cfg)
 	iRepository := repo.NewRepository(db)
-	iFeedbackService := service.NewFeedbackService(iRepository)
+	client := rpc.NewNotifyClient(cfg)
+	iFeedbackService := service.NewFeedbackService(iRepository, client)
 	container := NewContainer(cfg, iFeedbackService)
 	return container
 }

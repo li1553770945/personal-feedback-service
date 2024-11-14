@@ -4,10 +4,12 @@ import (
 	"context"
 	"github.com/li1553770945/personal-feedback-service/biz/internal/repo"
 	"github.com/li1553770945/personal-feedback-service/kitex_gen/feedback"
+	"github.com/li1553770945/personal-notify-service/kitex_gen/notify/notifyservice"
 )
 
 type FeedbackServiceImpl struct {
-	Repo repo.IRepository
+	Repo         repo.IRepository
+	NotifyClient notifyservice.Client
 }
 
 type IFeedbackService interface {
@@ -19,8 +21,9 @@ type IFeedbackService interface {
 	GetUnreadFeedback(ctx context.Context) (resp *feedback.GetUnreadFeedbackResp, err error)
 }
 
-func NewFeedbackService(repo repo.IRepository) IFeedbackService {
+func NewFeedbackService(repo repo.IRepository, notifyClient notifyservice.Client) IFeedbackService {
 	return &FeedbackServiceImpl{
-		Repo: repo,
+		Repo:         repo,
+		NotifyClient: notifyClient,
 	}
 }

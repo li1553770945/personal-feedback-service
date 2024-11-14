@@ -2,6 +2,9 @@
 
 ## 初始化项目
 ```bash
+export GOPROXY=direct
+export HTTP_PROXY=http://localhost:7890
+export HTTPS_PROXY=http://localhost:7890
 kitex -module "github.com/li1553770945/personal-feedback-service" -service personal-feedback-service idl/feedback.thrift
 cd biz/infra/container
 wire

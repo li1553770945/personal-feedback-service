@@ -5,8 +5,8 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
+	"github.com/li1553770945/personal-feedback-service/biz/infra/config"
 	"github.com/li1553770945/personal-notify-service/kitex_gen/notify/notifyservice"
-	"github.com/li1553770945/personal-project-service/biz/infra/config"
 	"log"
 )
 

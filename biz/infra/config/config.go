@@ -28,13 +28,16 @@ type DatabaseConfig struct {
 	Address  string `yaml:"address"`
 	Port     int32  `yaml:"port"`
 }
-
+type RpcConfig struct {
+	NotifyServiceName string `yaml:"notify-service-name"`
+}
 type Config struct {
 	Env                 string
 	ServerConfig        ServerConfig        `yaml:"server"`
 	OpenTelemetryConfig OpenTelemetryConfig `yaml:"open-telemetry"`
 	DatabaseConfig      DatabaseConfig      `yaml:"database"`
 	EtcdConfig          EtcdConfig          `yaml:"etcd"`
+	RpcConfig           RpcConfig           `yaml:"rpc"`
 }
 
 func GetConfig(env string) *Config {

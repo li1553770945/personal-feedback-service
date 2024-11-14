@@ -10,6 +10,7 @@ import (
 	"github.com/li1553770945/personal-feedback-service/biz/internal/domain"
 	"github.com/li1553770945/personal-feedback-service/kitex_gen/base"
 	"github.com/li1553770945/personal-feedback-service/kitex_gen/feedback"
+	"github.com/li1553770945/personal-notify-service/kitex_gen/notify"
 )
 
 func (s *FeedbackServiceImpl) GetFeedbackCategories(ctx context.Context) (resp *feedback.GetFeedbackCategoryResp, err error) {
@@ -62,6 +63,29 @@ func (s *FeedbackServiceImpl) AddFeedback(ctx context.Context, req *feedback.Add
 	}
 
 	klog.CtxInfof(ctx, "新增反馈成功，反馈ID: %d，UUID: %s", entity.ID, entity.UUID)
+	message := fmt.Sprintf("消息id：%d  \n类别：%s  \n署名：%s  \n联系方式：%s  \n内容：%s",
+		entity.ID,
+		entity.Category.Name,
+		entity.Name,
+		entity.Contact,
+		entity.Content)
+
+	notifyReq := notify.SendNotifyReq{
+		Platform: "wechat",
+		Title:    "收到一条新的反馈",
+		Message:  message,
+	}
+	notifyResp, err := s.NotifyClient.SendNotify(ctx, &notifyReq)
+	if err != nil {
+		klog.CtxErrorf(ctx, "发送消息失败: %v", err)
+	}
+	if notifyResp.BaseResp.Code != constant.Success {
+		klog.CtxErrorf(ctx, "发送消息失败:%s", notifyResp.BaseResp.Message)
+	}
+	if err == nil && notifyResp.BaseResp.Code == constant.Success {
+		klog.CtxInfof(ctx, "发送消息成功")
+	}
+
 	return &feedback.AddFeedbackResp{
 		BaseResp: &base.BaseResp{Code: 0},
 		Uuid:     &entity.UUID,

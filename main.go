@@ -23,6 +23,7 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
+	"github.com/kitex-contrib/registry-etcd/retry"
 	"github.com/li1553770945/personal-feedback-service/biz/infra/config"
 	"github.com/li1553770945/personal-feedback-service/biz/infra/container"
 	"github.com/li1553770945/personal-feedback-service/biz/infra/log"
@@ -30,6 +31,7 @@ import (
 	"github.com/li1553770945/personal-feedback-service/kitex_gen/feedback/feedbackservice"
 	"net"
 	"os"
+	"time"
 )
 
 func main() {
@@ -57,7 +59,12 @@ func main() {
 		panic("设置监听地址出错")
 	}
 
-	r, err := etcd.NewEtcdRegistry(App.Config.EtcdConfig.Endpoint) // r should not be reused.
+	retryConfig := retry.NewRetryConfig(
+		retry.WithMaxAttemptTimes(0),
+		retry.WithObserveDelay(20*time.Second),
+		retry.WithRetryDelay(5*time.Second),
+	)
+	r, err := etcd.NewEtcdRegistryWithRetry(App.Config.EtcdConfig.Endpoint, retryConfig) // r should not be reused.
 	if err != nil {
 		panic(err)
 	}
